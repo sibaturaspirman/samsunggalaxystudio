@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -59,7 +59,6 @@ const productData = {
 
 export default function ProductFlip7() {
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  const [mediaLoaded, setMediaLoaded] = useState(false);
   const selected = productData.colors[selectedColorIndex];
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -73,35 +72,14 @@ export default function ProductFlip7() {
   };
 
   useEffect(() => {
-    const preloadMedia = async () => {
-      const imagePromises = selected.images.map(
-        (img) =>
-          new Promise((resolve) => {
-            const image = new window.Image();
-            image.src = img;
-            image.onload = resolve;
-          })
-      );
-      const videoPromise = new Promise((resolve) => {
-        const video = document.createElement('video');
-        video.src = selected.video;
-        video.oncanplaythrough = resolve;
-      });
-
-      await Promise.all([...imagePromises, videoPromise]);
-      setMediaLoaded(true);
-    };
-
-    preloadMedia();
-  }, [selected]);
-
-  if (!mediaLoaded) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-lg font-medium">Memuat konten...</p>
-      </div>
-    );
-  }
+    if (swiperRef.current && prevRef.current && nextRef.current) {
+      swiperRef.current.params.navigation.prevEl = prevRef.current;
+      swiperRef.current.params.navigation.nextEl = nextRef.current;
+      swiperRef.current.navigation.destroy();
+      swiperRef.current.navigation.init();
+      swiperRef.current.navigation.update();
+    }
+  }, [selectedColorIndex]);
 
   return (
     <div className="text-center px-4 py-10 pt-10 mt-[1rem] w-full">
@@ -119,6 +97,8 @@ export default function ProductFlip7() {
           onBeforeInit={(swiper) => {
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
+          }}
+          onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
           modules={[Navigation]}
@@ -143,6 +123,7 @@ export default function ProductFlip7() {
                 width={250}
                 height={250}
                 className="mx-auto"
+                style={{ height: 'auto' }}
               />
             </SwiperSlide>
           ))}
@@ -155,7 +136,7 @@ export default function ProductFlip7() {
         >
           <Image
             src="/images/chev-l.png"
-            alt="Chevron Left"
+            alt="Previous"
             width={40}
             height={40}
             className="w-full mx-auto"
@@ -167,7 +148,7 @@ export default function ProductFlip7() {
         >
           <Image
             src="/images/chev-r.png"
-            alt="Chevron Right"
+            alt="Next"
             width={40}
             height={40}
             className="w-full mx-auto"

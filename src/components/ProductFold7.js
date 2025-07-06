@@ -17,7 +17,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Blue-1.png',
         '/videos/ZFold7_Blue-2.png',
-        '/videos/ZFold7_Blue-3.png',
+        '/videos/ZFold7_Blue-3.png'
       ],
     },
     {
@@ -27,7 +27,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Jetblack-1.png',
         '/videos/ZFold7_Jetblack-2.png',
-        '/videos/ZFold7_Jetblack-3.png',
+        '/videos/ZFold7_Jetblack-3.png'
       ],
     },
     {
@@ -37,7 +37,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Silver-1.png',
         '/videos/ZFold7_Silver-2.png',
-        '/videos/ZFold7_Silver-3.png',
+        '/videos/ZFold7_Silver-3.png'
       ],
     },
   ],
@@ -59,8 +59,6 @@ export default function ProductFold7() {
       }
     }, 0);
   };
-
-  
 
   useEffect(() => {
     const preloadMedia = async () => {
@@ -133,6 +131,7 @@ export default function ProductFold7() {
                 width={250}
                 height={250}
                 className="mx-auto"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </SwiperSlide>
           ))}
