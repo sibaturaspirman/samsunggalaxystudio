@@ -28,6 +28,9 @@ body {
 
 .mySwiper .swiper-pagination{
   position: relative;
-  margin-top: 2rem;
-  
+  margin-top: 2rem; 
+}
+
+.navprodslider.swiper-button-disabled{
+  opacity: .2;
 }
