@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -17,7 +17,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Blue-1.png',
         '/videos/ZFold7_Blue-2.png',
-        '/videos/ZFold7_Blue-3.png'
+        '/videos/ZFold7_Blue-3.png',
       ],
     },
     {
@@ -27,7 +27,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Jetblack-1.png',
         '/videos/ZFold7_Jetblack-2.png',
-        '/videos/ZFold7_Jetblack-3.png'
+        '/videos/ZFold7_Jetblack-3.png',
       ],
     },
     {
@@ -37,7 +37,7 @@ const productData = {
       images: [
         '/videos/ZFold7_Silver-1.png',
         '/videos/ZFold7_Silver-2.png',
-        '/videos/ZFold7_Silver-3.png'
+        '/videos/ZFold7_Silver-3.png',
       ],
     },
   ],
@@ -45,6 +45,7 @@ const productData = {
 
 export default function ProductFold7() {
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [mediaLoaded, setMediaLoaded] = useState(false);
   const selected = productData.colors[selectedColorIndex];
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -52,10 +53,45 @@ export default function ProductFold7() {
 
   const handleColorSelect = (index) => {
     setSelectedColorIndex(index);
-    if (swiperRef.current) {
-      swiperRef.current.slideTo(0);
-    }
+    setTimeout(() => {
+      if (swiperRef.current) {
+        swiperRef.current.slideTo(0);
+      }
+    }, 0);
   };
+
+  
+
+  useEffect(() => {
+    const preloadMedia = async () => {
+      const imagePromises = selected.images.map(
+        (img) =>
+          new Promise((resolve) => {
+            const image = new window.Image();
+            image.src = img;
+            image.onload = resolve;
+          })
+      );
+      const videoPromise = new Promise((resolve) => {
+        const video = document.createElement('video');
+        video.src = selected.video;
+        video.oncanplaythrough = resolve;
+      });
+
+      await Promise.all([...imagePromises, videoPromise]);
+      setMediaLoaded(true);
+    };
+
+    preloadMedia();
+  }, [selected]);
+
+  if (!mediaLoaded) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-lg font-medium">Memuat konten...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="text-center px-4 py-10 pt-7 bg-white w-full">
@@ -109,64 +145,63 @@ export default function ProductFold7() {
         >
           <Image
             src="/images/chev-l.png"
-            alt="Galaxy Studio Booth"
+            alt="prev"
             width={40}
             height={40}
-            className="w-full mx-auto"
-            />
+            className="w-full"
+          />
         </button>
         <button
           ref={nextRef}
           className="absolute right-[-20px] top-1/2 transform -translate-y-1/2 w-[40px] h-[40px] rounded-full shadow-md flex items-center justify-center z-30 navprodslider"
         >
-            <Image
+          <Image
             src="/images/chev-r.png"
-            alt="Galaxy Studio Booth"
+            alt="next"
             width={40}
             height={40}
-            className="w-full mx-auto"
-            />
+            className="w-full"
+          />
         </button>
       </div>
 
       <p className="text-sm font-semibold mb-1">Warna</p>
       <div className="flex justify-center gap-3 mb-6">
         {productData.colors.map((color, index) => {
-            const isSelected = selectedColorIndex === index;
-            return (
-                <button
-                key={index}
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    isSelected ? 'border-2 bg-white p-[2px]' : ''
-                }`}
-                style={isSelected ? { borderColor: color.value } : {}}
-                onClick={() => handleColorSelect(index)}
-                >
-                <div
-                    className="w-6 h-6 rounded-full"
-                    style={{ backgroundColor: color.value }}
-                ></div>
-                </button>
-            );
+          const isSelected = selectedColorIndex === index;
+          return (
+            <button
+              key={index}
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                isSelected ? 'border-2 bg-white p-[2px]' : ''
+              }`}
+              style={isSelected ? { borderColor: color.value } : {}}
+              onClick={() => handleColorSelect(index)}
+            >
+              <div
+                className="w-6 h-6 rounded-full"
+                style={{ backgroundColor: color.value }}
+              ></div>
+            </button>
+          );
         })}
       </div>
 
-        <a
-        href="https://www.samsung.com/id/" // Ganti dengan URL tujuan
+      <a
+        href="https://www.samsung.com/id/"
         target="_blank"
         rel="noopener noreferrer"
         className="w-full transition block"
-        >
+      >
         <Image
-            src="/images/btn-ketauhi.png"
-            className="w-[80%] mx-auto"
-            alt="Samsung"
-            width={320}
-            height={56}
-            priority
+          src="/images/btn-ketauhi.png"
+          className="w-[80%] mx-auto"
+          alt="Samsung"
+          width={320}
+          height={56}
+          priority
         />
-        </a>
-
+      </a>
     </div>
   );
 }
