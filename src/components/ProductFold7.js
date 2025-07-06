@@ -8,44 +8,43 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const productData = {
-  name: 'Galaxy Z Fold7',
-  colors: [
-    {
-      name: 'Blue',
-      value: '#2D70C4',
-      video: '/videos/ZFold7_Blue.mp4',
-      images: [
-        '/videos/ZFold7_Blue-1.png',
-        '/videos/ZFold7_Blue-2.png',
-        '/videos/ZFold7_Blue-3.png'
-      ],
-    },
-    {
-      name: 'Jetblack',
-      value: '#4A4A4D',
-      video: '/videos/ZFold7_Jetblack.mp4',
-      images: [
-        '/videos/ZFold7_Jetblack-1.png',
-        '/videos/ZFold7_Jetblack-2.png',
-        '/videos/ZFold7_Jetblack-3.png'
-      ],
-    },
-    {
-      name: 'Silver',
-      value: '#D7E5E5',
-      video: '/videos/ZFold7_Silver.mp4',
-      images: [
-        '/videos/ZFold7_Silver-1.png',
-        '/videos/ZFold7_Silver-2.png',
-        '/videos/ZFold7_Silver-3.png'
-      ],
-    },
-  ],
-};
+    name: 'Galaxy Z Fold7',
+    colors: [
+      {
+        name: 'Blue',
+        value: '#2D70C4',
+        video: '/videos/ZFold7_Blue.mp4',
+        images: [
+          '/videos/ZFold7_Blue-1.png',
+          '/videos/ZFold7_Blue-2.png',
+          '/videos/ZFold7_Blue-3.png'
+        ],
+      },
+      {
+        name: 'Jetblack',
+        value: '#4A4A4D',
+        video: '/videos/ZFold7_Jetblack.mp4',
+        images: [
+          '/videos/ZFold7_Jetblack-1.png',
+          '/videos/ZFold7_Jetblack-2.png',
+          '/videos/ZFold7_Jetblack-3.png'
+        ],
+      },
+      {
+        name: 'Silver',
+        value: '#D7E5E5',
+        video: '/videos/ZFold7_Silver.mp4',
+        images: [
+          '/videos/ZFold7_Silver-1.png',
+          '/videos/ZFold7_Silver-2.png',
+          '/videos/ZFold7_Silver-3.png'
+        ],
+      },
+    ],
+  };
 
-export default function ProductFold7() {
+export default function ProductFlip7() {
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  const [mediaLoaded, setMediaLoaded] = useState(false);
   const selected = productData.colors[selectedColorIndex];
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -53,46 +52,23 @@ export default function ProductFold7() {
 
   const handleColorSelect = (index) => {
     setSelectedColorIndex(index);
-    setTimeout(() => {
-      if (swiperRef.current) {
-        swiperRef.current.slideTo(0);
-      }
-    }, 0);
+    if (swiperRef.current) {
+      swiperRef.current.slideTo(0);
+    }
   };
 
   useEffect(() => {
-    const preloadMedia = async () => {
-      const imagePromises = selected.images.map(
-        (img) =>
-          new Promise((resolve) => {
-            const image = new window.Image();
-            image.src = img;
-            image.onload = resolve;
-          })
-      );
-      const videoPromise = new Promise((resolve) => {
-        const video = document.createElement('video');
-        video.src = selected.video;
-        video.oncanplaythrough = resolve;
-      });
-
-      await Promise.all([...imagePromises, videoPromise]);
-      setMediaLoaded(true);
-    };
-
-    preloadMedia();
-  }, [selected]);
-
-  if (!mediaLoaded) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-lg font-medium">Memuat konten...</p>
-      </div>
-    );
-  }
+    if (swiperRef.current && prevRef.current && nextRef.current) {
+      swiperRef.current.params.navigation.prevEl = prevRef.current;
+      swiperRef.current.params.navigation.nextEl = nextRef.current;
+      swiperRef.current.navigation.destroy();
+      swiperRef.current.navigation.init();
+      swiperRef.current.navigation.update();
+    }
+  }, [selectedColorIndex]);
 
   return (
-    <div className="text-center px-4 py-10 pt-7 bg-white w-full">
+    <div className="text-center px-4 py-10 pt-10 mt-[1rem] w-full">
       <h1 className="text-3xl font-bold mb-4">{productData.name}</h1>
 
       <div className="relative mb-2 max-w-xs mx-auto w-full">
@@ -107,6 +83,8 @@ export default function ProductFold7() {
           onBeforeInit={(swiper) => {
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
+          }}
+          onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
           modules={[Navigation]}
@@ -131,7 +109,7 @@ export default function ProductFold7() {
                 width={250}
                 height={250}
                 className="mx-auto"
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ height: 'auto' }}
               />
             </SwiperSlide>
           ))}
@@ -144,10 +122,10 @@ export default function ProductFold7() {
         >
           <Image
             src="/images/chev-l.png"
-            alt="prev"
+            alt="Previous"
             width={40}
             height={40}
-            className="w-full"
+            className="w-full mx-auto"
           />
         </button>
         <button
@@ -156,15 +134,15 @@ export default function ProductFold7() {
         >
           <Image
             src="/images/chev-r.png"
-            alt="next"
+            alt="Next"
             width={40}
             height={40}
-            className="w-full"
+            className="w-full mx-auto"
           />
         </button>
       </div>
 
-      <p className="text-sm font-semibold mb-1">Warna</p>
+      <p className="text-sm font-semibold mb-1 mt-2">Warna</p>
       <div className="flex justify-center gap-3 mb-6">
         {productData.colors.map((color, index) => {
           const isSelected = selectedColorIndex === index;
@@ -172,7 +150,7 @@ export default function ProductFold7() {
             <button
               key={index}
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                isSelected ? 'border-2 bg-white p-[2px]' : ''
+                isSelected ? 'border-2 bg-[#F3F4F6] p-[2px]' : ''
               }`}
               style={isSelected ? { borderColor: color.value } : {}}
               onClick={() => handleColorSelect(index)}
