@@ -68,7 +68,7 @@ export default function ProductFlip7() {
   }, [selectedColorIndex]);
 
   return (
-    <div className="text-center px-4 py-10 pt-10 mt-[1rem] w-full">
+    <div className="text-center px-4 py-10 pt-10 bg-white w-full">
       <h1 className="text-3xl font-bold mb-4">{productData.name}</h1>
 
       <div className="relative mb-2 max-w-xs mx-auto w-full">
