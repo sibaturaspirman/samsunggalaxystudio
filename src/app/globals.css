@@ -25,3 +25,9 @@ body {
   font-family: 'Samsung Sharp Sans', sans-serif;
 
 }
+
+.mySwiper .swiper-pagination{
+  position: relative;
+  margin-top: 2rem;
+  
+}

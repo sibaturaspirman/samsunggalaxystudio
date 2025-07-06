@@ -8,24 +8,22 @@ export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
   const segments = pathname.split('/').filter(Boolean);
-  const section = segments[1]; // mallId/section
+  const section = segments[1]; // home, product, etc.
 
   const showNav = ['home', 'product', 'experience'].includes(section);
 
   return (
     <>
-      <main className={`max-w-md mx-auto  ${showNav ? 'pb-24' : ''} `}>
-        <div className="px-4 pt-4 pb-7 text-center">
-          <Image
-            src="/images/samsung-logo.png"
-            alt="Samsung Logo"
-            width={102}
-            height={16}
-            priority
-          />
-        </div>
-        {children}
-      </main>
+    <main className={`max-w-md mx-auto  ${showNav ? 'pb-24' : ''} `}>
+      <div className="px-4 pt-4 pb-7 text-center">
+        <Image
+          src="/images/samsung-logo.png"
+          alt="Samsung Logo"
+          width={102}
+          height={16}
+          priority
+        />
+      </div>{children}</main>
       {showNav && <BottomNav />}
     </>
   );

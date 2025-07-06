@@ -16,7 +16,7 @@ export default function GalaxyStudioHome() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 pt-0">
+    <div className="bg-gray-100 py-0">
         <div className=' px-4'>
             {/* Headline */}
             <div className="text-center" data-aos="fade-up">
@@ -37,10 +37,6 @@ export default function GalaxyStudioHome() {
           height={217}
           className="w-full mx-auto"
         />
-        <div className="absolute bottom-4 left-6 text-white font-bold drop-shadow text-xl leading-tight">
-          <p>Galaxy</p>
-          <p>Z Fold7 | Z Flip7</p>
-        </div>
       </div>
       <div className='px-4'>
         {/* Description */}

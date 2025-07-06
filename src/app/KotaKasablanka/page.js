@@ -1,9 +1,13 @@
 'use client';
 
+import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 export default function KotaKasablankaPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const mallId = pathname.split('/')[1]; // Ambil mallId dari URL
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -78,7 +82,8 @@ export default function KotaKasablankaPage() {
     } else {
     //   alert('Form valid! (Siap dikirim)');
         localStorage.setItem('formData', JSON.stringify(form));
-      console.log(form);
+        router.push(mallId+'/home');
+      // console.log(form);
     }
   };
 

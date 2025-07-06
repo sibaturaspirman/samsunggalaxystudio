@@ -26,13 +26,15 @@ const navItems = [
 ];
 
 export default function BottomNav() {
-  const pathname = usePathname(); // contoh: /KotaKasablanka/home
+  const pathname = usePathname(); // contoh: /KotaKasablanka/experience/stamp
+
+  const mallId = pathname.split('/')[1]; // ambil "KotaKasablanka"
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-50">
       {navItems.map((item) => {
-        const isActive = pathname.endsWith(`/${item.href}`);
-        const fullPath = `/${pathname.split('/')[1]}/${item.href}`; // /[mallId]/[section]
+        const isActive = pathname.includes(`/${item.href}`);
+        const fullPath = `/${mallId}/${item.href}`;
 
         return (
           <Link

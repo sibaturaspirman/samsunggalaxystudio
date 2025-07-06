@@ -1,6 +1,6 @@
 import './globals.css';
 import '../styles/fonts.css';
-import ClientLayout from '@/components/ClientLayout';
+// import ClientLayout from '@/components/ClientLayout';
 
 export const metadata = {
     title: "Samsung Galaxy Studio Experience ",
@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        {children}
       </body>
     </html>
   );
