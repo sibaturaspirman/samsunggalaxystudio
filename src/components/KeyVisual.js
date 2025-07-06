@@ -7,7 +7,7 @@ export default function KeyVisual() {
       <h3 className="font-semibold text-center text-2xl mb-3 px-5">Ikuti kompetisi media sosial dan menangkan hadiah</h3>
       <div className='w-full'>
         <Image
-            src='/images/KV.png'
+            src='/images/kv.png'
             alt='Samsung'
             width={720}
             height={962}
