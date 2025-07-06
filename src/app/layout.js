@@ -1,5 +1,6 @@
 import './globals.css';
 import '../styles/fonts.css';
+import GlobalLoader from '@/components/GlobalLoader';
 // import ClientLayout from '@/components/ClientLayout';
 
 export const metadata = {
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <body>
+        <GlobalLoader />
         {children}
       </body>
     </html>
