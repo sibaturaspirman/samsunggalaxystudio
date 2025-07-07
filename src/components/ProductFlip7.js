@@ -110,7 +110,7 @@ export default function ProductFlip7() {
               loop
               playsInline
               className="mx-auto rounded-xl"
-              width={160}
+              width={250}
               height={250}
               src={selected.video}
             />
