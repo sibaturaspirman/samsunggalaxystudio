@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ProductFold7 from '@/components/ProductFold7';
 import ProductFlip7 from '@/components/ProductFlip7';
+import ProtectedPage from '@/components/ProtectedPage';
 
 export default function GalaxyStudioHome() {
   const sectionRef = useRef(null);
@@ -42,6 +43,7 @@ export default function GalaxyStudioHome() {
   }, []);
 
   return (
+    <ProtectedPage>
     <div className="bg-gray-100 py-0">
       {!hideButton && (
         <div className="fixed left-0 right-0 bottom-[6rem] mx-auto flex items-center justify-center z-50">
@@ -76,5 +78,6 @@ export default function GalaxyStudioHome() {
       </div>
 
     </div>
+    </ProtectedPage>
   );
 }

@@ -3,6 +3,9 @@
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { loginSamsung } from '@/lib/auth';
+
 
 export default function KotaKasablankaPage() {
   const router = useRouter();
@@ -19,6 +22,7 @@ export default function KotaKasablankaPage() {
 
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const valid =
@@ -74,22 +78,48 @@ export default function KotaKasablankaPage() {
     return errs;
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const errs = validate();
+  //   if (Object.keys(errs).length > 0) {
+  //     setErrors(errs);
+  //   } else {
+  //   //   alert('Form valid! (Siap dikirim)');
+  //       localStorage.setItem('formData', JSON.stringify(form));
+  //       router.push(mallId+'/home');
+  //     // console.log(form);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
     } else {
-    //   alert('Form valid! (Siap dikirim)');
-        localStorage.setItem('formData', JSON.stringify(form));
-        router.push(mallId+'/home');
-      // console.log(form);
+      setLoading(true);
+      try {
+        const response = await loginSamsung(form, mallId);
+        Cookies.set('tokenDataGSE', response.token, { expires: 7 });
+        localStorage.setItem('formDataGSE', JSON.stringify(form));
+        // localStorage.setItem('tokenDataGSE', response.token);
+        router.push(`/${mallId}/home`);
+        // console.log(response)
+      } catch (error) {
+        alert('Gagal daftar: ' + error.message);
+      } finally {
+        setLoading(false);
+      }
+
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10 pt-0">
-      <div className="max-w-md mx-auto">
+      <div className={`max-w-md mx-auto w-full transition ${
+          !loading ? '' : 'pointer-events-none'
+        }`}>
         <h1 className="text-[32px] font-bold text-center leading-snug">
           Unfold power.<br />Flip the norm.
         </h1>
@@ -242,6 +272,26 @@ export default function KotaKasablankaPage() {
           {/* Submit */}
           <button
             type="submit"
+            disabled={!isValid || loading}
+            className={`w-full transition ${
+              isValid && !loading ? 'cursor-pointer' : 'opacity-20 cursor-not-allowed'
+            }`}>
+            {loading ? (
+              <p className="text-center py-3">Mengirim data...</p>
+            ) : (
+              <Image
+                src="/images/btn-daftar.png"
+                className="w-full"
+                alt="Samsung"
+                width={288}
+                height={56}
+                priority
+              />
+            )}
+          </button>
+
+          {/* <button
+            type="submit"
             disabled={!isValid}
             className={`w-full transition ${
               isValid
@@ -256,7 +306,7 @@ export default function KotaKasablankaPage() {
             height={56}
             priority
           />
-          </button>
+          </button> */}
         </form>
       </div>
     </div>

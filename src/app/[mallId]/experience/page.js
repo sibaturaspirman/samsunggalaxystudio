@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import ProtectedPage from '@/components/ProtectedPage';
 
 
 export default function GalaxyStudioHome() {
@@ -17,6 +17,7 @@ export default function GalaxyStudioHome() {
   }, []);
 
   return (
+    <ProtectedPage>
     <div className="bg-gray-100 py-0">
         <div className=' px-4'>
             {/* Headline */}
@@ -53,5 +54,6 @@ export default function GalaxyStudioHome() {
       </Link>
 
     </div>
+    </ProtectedPage>
   );
 }

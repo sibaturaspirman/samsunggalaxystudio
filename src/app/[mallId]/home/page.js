@@ -7,15 +7,17 @@ import 'aos/dist/aos.css';
 import GalaxyStudioSchedule from '@/components/GalaxyStudioSchedule';
 import PromoList from '@/components/PromoList';
 import KeyVisual from '@/components/KeyVisual';
+import ProtectedPage from '@/components/ProtectedPage';
 
 
-
-export default function GalaxyStudioHome() {
+export default function GalaxyStudioHome({ profile }) {
+  
   useEffect(() => {
     AOS.init({ once: true, duration: 800 });
   }, []);
 
   return (
+    <ProtectedPage>
     <div className="bg-gray-100 py-0">
         <div className=' px-4'>
             {/* Headline */}
@@ -56,5 +58,6 @@ export default function GalaxyStudioHome() {
       <KeyVisual />
 
     </div>
+    </ProtectedPage>
   );
 }
